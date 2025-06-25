@@ -1,8 +1,15 @@
+import { useEffect, useState } from "react";
+
 type MyPropsType = {
   props: number;
 };
 
+type DataType = {
+  title: string;
+};
+
 export default function SecondComponent({ props }: MyPropsType) {
+  const [dataTest, setDataTest] = useState<DataType | null>(null);
   props = props * 10;
   const url = "https://jsonplaceholder.typicode.com/todos/1";
   type UsersType = {
@@ -33,27 +40,42 @@ export default function SecondComponent({ props }: MyPropsType) {
   // }
   // console.log(test(users));
 
-  // fetch(url)
-  //   .then((response) => response.json())
-  //   .then((json) => console.log(json));
-
-  const xmlReq = new XMLHttpRequest();
-
-  xmlReq.open("GET", url);
-
-  xmlReq.onload = function () {
-    if (xmlReq.status >= 200 && xmlReq.status < 300) {
-      const response = JSON.parse(xmlReq.response);
-      console.log("answer api:", response);
-    } else {
-      console.error("ошибка запроса", xmlReq.status);
+  // const xmlReq = new XMLHttpRequest();
+  // xmlReq.open("GET", url);
+  // xmlReq.onload = function () {
+  //   if (xmlReq.status >= 200 && xmlReq.status < 300) {
+  //     const response = JSON.parse(xmlReq.response);
+  //     console.log("answer api:", response);
+  //   } else {
+  //     console.error("ошибка запроса", xmlReq.status);
+  //   }
+  // };
+  // xmlReq.onerror = function () {
+  //   console.error("сутевая ошибка");
+  // };
+  // xmlReq.send();
+  useEffect(() => {
+    async function getData() {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`error:${response.status}`);
+        }
+        const data = await response.json();
+        setDataTest(data);
+      } catch (error) {
+        console.error("error", error);
+      }
     }
-  };
-  xmlReq.onerror = function () {
-    console.error("сутевая ошибка");
-  };
+    getData();
+  }, []);
 
-  xmlReq.send();
-
-  return <>{`test my props: ${props ?? "ошибка"}`}</>;
+  return (
+    <>
+      <div>
+        <p>{`test my props: ${props ?? "ошибка"}`}</p>
+        <p>title: {dataTest?.title}</p>
+      </div>
+    </>
+  );
 }

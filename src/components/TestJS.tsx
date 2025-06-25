@@ -11,7 +11,7 @@ export default function TestJS() {
         {`стартовое:${a}`}
         <br></br>
       </p>
-      <p>Итоговое число: {a && <SecondComponent props={a} />}</p>
+      Итоговое число: {a && <SecondComponent props={a} />}
     </>
   );
 }
