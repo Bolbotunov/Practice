@@ -1,21 +1,10 @@
-import { useState } from "react";
 import "./App.css";
-import SecondComponent from "./components/SecondComponent";
-import TestJS from "./components/testJS";
+import TestComponent from "./components/TestComponent";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-      <div>
-        <TestJS />
-      </div>
+      <TestComponent />
     </>
   );
 }
