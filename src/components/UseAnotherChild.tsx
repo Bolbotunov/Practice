@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
-export default function UseAnotherChild() {
+export default memo(function UseAnotherChild(testText: string) {
   const [state, setState] = useState("");
   const [query, setQuery] = useState("");
+  const myRef = useRef(100);
+  console.log(myRef.current);
   const url = "https://jsonplaceholder.typicode.com/todos/1";
   const newUrl = "https://jsonplaceholder.typicode.com/todos/2";
   const NUMBER = 5;
@@ -12,9 +14,10 @@ export default function UseAnotherChild() {
   }
   useEffect(() => {
     console.log("компонент смонтирован");
+    console.log("testText", testText);
     getData(url);
     return () => console.log("компонент размонтирован");
-  }, []);
+  }, [testText]);
 
   async function getData(url: string) {
     try {
@@ -32,9 +35,9 @@ export default function UseAnotherChild() {
     setQuery(e);
   }
 
-  useEffect(() => {
-    getData(newUrl);
-  }, [query]);
+  // useEffect(() => {
+  //   getData(newUrl);
+  // }, [query]);
 
   return (
     <div className="list">
@@ -49,4 +52,4 @@ export default function UseAnotherChild() {
       </ul>
     </div>
   );
-}
+});
